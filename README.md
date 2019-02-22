@@ -1,7 +1,8 @@
 *Population Genomics Workshop 2019, University of Sheffield*
-#Genome-wide association studies in structured populations
-####Originally developed by Michael Stocks
-####Delivered by Victor Soria-Carrasco
+
+# Genome-wide Association Studies (GWAS) in structured populations using GenABEL
+#### Originally developed by Michael Stocks
+#### Delivered by Victor Soria-Carrasco
 
 The aim of this practical is to identify markers associated with male mating behaviour in the ruff. We will use the dataset of [*Küpper et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3443.html) and attempt to identify markers underlying the "female-mimic" *Faeder* morph. For this, we will use the `R` package [GenABEL](http://genabel.org/), and by the end of the tutorial you should be able to:
 
