@@ -12,7 +12,6 @@ The aim of this practical is to identify markers associated with male mating beh
 * Correct for population stratification
 
 ## Getting started
-
 Inside your home directly type the following to download the tutorial and data:
 ```bash
 git clone https://github.com/visoca/popgenomworkshop-gwas_genabel
@@ -44,22 +43,22 @@ install.packages("https://raw.githubusercontent.com/visoca/popgenomworkshop-gwas
 
 ## Importing and exploring the data
 First, load the library:
-```{r }
+```r
 library(GenABEL)
 ```
 Now import the data and assign the object to the variable `ruff.data`:
-```{r }
+```r
 ruff.data <- load.gwaa.data(phe = "phe_RUFF.txt", gen = "gen_RUFF_qc.raw", force = T)
 ```
 We'll now do some basic filtering to remove uninformative markers and to decrease the size of the dataset:
-```{r }
+```r
 qc <- check.marker(ruff.data, callrate = 0.66, p.level = 1e-5, perid.call = 0, extr.perid.call = 0, ibs.mrk = -1)
 ruff.clean <- ruff.data[qc$idok, qc$snpok]
 ```
 We will not go into the details of these filters but more information is available [here](https://www.rdocumentation.org/packages/GenABEL/versions/1.8-0/topics/check.marker).
 
 A brief overview of the data are given for the traits or the markers using the following two commands:
-```{r }
+```r
 descriptives.trait(ruff.clean)
 descriptives.marker(ruff.clean)
 ```
@@ -72,25 +71,24 @@ The data consists of 41 male ruff individuals. The phenotypic data is contained 
 The genotypic data consists of markers derived from RAD sequencing, and have been mapped to the ruff draft genome. See [*Küpper et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3443.html), and it's sister publication [*Lamichhaney et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3430.html), for more details. After filtering we now have a dataset of 383,514 snps with which to look for associations with the trait of interest. 
 
 ## Perform an association study
-
 We will start with some simple tests of association the *Faeder* morph trait. That is, are there markers associated with an individual being either a *Faeder* or a non-*Faeder* (i.e. a *Satellite* or *Independent*) morph? This trait is indicated by the phenotype `fo` and is a categorical trait. We will start by using the fast score test method:
-```{r }
+```r
 fo.QT <- qtscore(fo ~ 1, data = ruff.clean, trait = "binomial")
 ```
 This then gives us a *p*-value for association between each marker and the `fo` trait. A breakdown of the 10 most significant associations can be produced using the `summary()` command:
-```{r }
+```r
 summary(fo.QT)
 ```
 You can also increase the number of markers displayed in the summary:
-```{r }
+```r
 summary(fo.QT, top = 30)
 ```
 This gives information about the location (`Chromosome`, `Position`) of each marker and the significance of the association (`P1df`). We will deal with the `Pc1df` column in the population stratification section (more details on the columns are given [here](https://www.rdocumentation.org/packages/GenABEL/versions/1.8-0/topics/scan.gwaa-class.html)). You can also check how many markers are below a certain significance threshold:
-```{r }
+```r
 sum(fo.QT[, "P1df"] <= 0.0001)
 ```
 We can also produce a Manhattan plot and write it to a pdf to better understand our data:
-```{r }
+```r
 pdf("fo_qt_manhattan.pdf", width = 12, height = 7)
 plot(fo.QT, col = c("black", "black"), ystart = 1)
 dev.off()
@@ -102,39 +100,36 @@ echo "Text body" | mail -s "QT plot" -a fo_qt_manhattan.pdf user@email.com
 The manhattan plot shows the `-log10(p)` values against the base-pair position of each marker on each chromosome (or contig in this case). Larger values mean that the association is more significant. Type `R` to enter the `R` environment again and then reload GenABEL once again with `library(GenABEL)` (the rest of your data will still be loaded).
 
 ## Correct for multiple tests
-
 Due to the number of tests being performed (equal to the number of markers), we would expect some significant results by chance alone. There are numerous ways to do this (e.g. Bonferroni correction, FDR etc...), one of which is to use permutations of the data to find a signifance cut-off threshold. This randomly shuffles the phenotypic values with respect to the individual genotypes at each marker. This creates independence between the trait and the markers and can be used to generate a suitable significance threshold. This can be done using the `qtscore` function, using the `times` option to specify 100 permutations:
-```{r }
+```r
 fo.QT100 <- qtscore(fo ~ 1, data = ruff.clean, trait = "binomial", times = 100)
 ```
 Using the `summary()` command, you can see that the *p*-values in the `P1df` column have been adjusted to account for multiple testing and indicate the proportion of permutations yielding a more significant *p*-value than that observed in the real data. 
 
 ## Population stratification
-
 Structure can create artificial associations between markers and phenotypes. In natural populations, there are a number of ways to use non-causal markers to account for any population stratification. We will look at two methods:
 
 1) The first method uses all markers in the dataset to measure the level of statification within the population. This value (often known as lambda) is then used to correct the *p*-values from the association test. The value of lamdba can be obtained with:
-```{r }
+```r
 lambda(fo.QT)
 ```
 A value of 1 indicates no stratification, and everything above that means that there may be some form of structure in the population. The corrected *p*-values are given by the `summary()` command under the `Pc1df` heading.
 
 2) Another method is to first estimate identity-by-state (IBS) and kinship information from the marker dataset, perform multidimensional scaling on these IBS coefficients, and then use these as covariants in the model. First, get the kinship matrix:
-```{r }
+```r
 gkin <- ibs(ruff.clean)
 ```
 Then perform the multidimensional scaling:
-```{r }
+```r
 mds <- cmdscale(as.dist(0.5 - gkin))
 ```
 And add these as covariates in the model:
-```{r }
+```r
 fo.QTibs <- qtscore(fo ~ mds[, 1] + mds[, 2], data = ruff.clean, trait.type = "binomial")
 ```
 As before, you can view the *p*-values using the `summary()` command, and produce Manhattan plots using `plot()`.
 
 ## References
-
 Aulchenko, Yurii S., Stephan Ripke, Aaron Isaacs, and Cornelia M. Van Duijn. "GenABEL: an R library for genome-wide association analysis." *Bioinformatics* 23, no. 10 (2007): 1294-1296.
 
 Küpper, Clemens, Michael Stocks, Judith E. Risse, Natalie dos Remedios, Lindsay L. Farrell, Susan B. McRae, Tawna C. Morgan et al. "A supergene determines highly divergent male reproductive morphs in the ruff." *Nature genetics* (2016).
