@@ -11,7 +11,7 @@ The aim of this practical is to identify markers associated with male mating beh
 * Account for multiple testing
 * Correct for population stratification
 
-##Getting started
+## Getting started
 
 Inside your home directly type the following to download the tutorial and data:
 ```bash
@@ -28,7 +28,7 @@ If you type `ls` and `ENTER` in the terminal then you should see two files. `gen
 
 Type `R` and enter to begin an `R` session. You can exit at any time by typing `q()` to get back to the `unix` environment.
 
-##Importing and exploring the data
+## Importing and exploring the data
 GenABEL is unfortunately no longer actively maintained and has been archived in the CRAN repository. To install it you will have to run the following commands:
 ```{r }
 install.packages("https://cran.r-project.org/src/contrib/Archive/GenABEL.data/GenABEL.data_1.0.0.tar.gz", repos=NULL, type="source")
@@ -67,7 +67,7 @@ The data consists of 41 male ruff individuals. The phenotypic data is contained 
 
 The genotypic data consists of markers derived from RAD sequencing, and have been mapped to the ruff draft genome. See [*Küpper et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3443.html), and it's sister publication [*Lamichhaney et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3430.html), for more details. After filtering we now have a dataset of 383,514 snps with which to look for associations with the trait of interest. 
 
-##Perform an association study
+## Perform an association study
 
 We will start with some simple tests of association the *Faeder* morph trait. That is, are there markers associated with an individual being either a *Faeder* or a non-*Faeder* (i.e. a *Satellite* or *Independent*) morph? This trait is indicated by the phenotype `fo` and is a categorical trait. We will start by using the fast score test method:
 ```{r }
@@ -97,7 +97,7 @@ echo "Text body" | mail -s "QT plot" -a fo_qt_manhattan.pdf user@email.com
 ```
 The manhattan plot shows the `-log10(p)` values against the base-pair position of each marker on each chromosome (or contig in this case). Larger values mean that the association is more significant. Type `R` to enter the `R` environment again and then reload GenABEL once again with `library(GenABEL)` (the rest of your data will still be loaded).
 
-##Correct for multiple tests
+## Correct for multiple tests
 
 Due to the number of tests being performed (equal to the number of markers), we would expect some significant results by chance alone. There are numerous ways to do this (e.g. Bonferroni correction, FDR etc...), one of which is to use permutations of the data to find a signifance cut-off threshold. This randomly shuffles the phenotypic values with respect to the individual genotypes at each marker. This creates independence between the trait and the markers and can be used to generate a suitable significance threshold. This can be done using the `qtscore` function, using the `times` option to specify 100 permutations:
 ```{r }
@@ -105,7 +105,7 @@ fo.QT100 <- qtscore(fo ~ 1, data = ruff.clean, trait = "binomial", times = 100)
 ```
 Using the `summary()` command, you can see that the *p*-values in the `P1df` column have been adjusted to account for multiple testing and indicate the proportion of permutations yielding a more significant *p*-value than that observed in the real data. 
 
-##Population stratification
+## Population stratification
 
 Structure can create artificial associations between markers and phenotypes. In natural populations, there are a number of ways to use non-causal markers to account for any population stratification. We will look at two methods:
 
@@ -129,7 +129,7 @@ fo.QTibs <- qtscore(fo ~ mds[, 1] + mds[, 2], data = ruff.clean, trait.type = "b
 ```
 As before, you can view the *p*-values using the `summary()` command, and produce Manhattan plots using `plot()`.
 
-##References
+## References
 
 Aulchenko, Yurii S., Stephan Ripke, Aaron Isaacs, and Cornelia M. Van Duijn. "GenABEL: an R library for genome-wide association analysis." *Bioinformatics* 23, no. 10 (2007): 1294-1296.
 
