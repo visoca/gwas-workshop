@@ -19,7 +19,7 @@ git clone https://github.com/visoca/popgenomworkshop-gwas_genabel
 
 This will create a file called `gwas-workshop`. Move into the directory and decompress the data:
 ```bash
-cd gwas-workshop
+cd popgenomworkshop-gwas_genabel
 gunzip gen_RUFF_qc.raw.gz
 ```
 
