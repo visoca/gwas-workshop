@@ -34,7 +34,7 @@ GenABEL is unfortunately no longer actively maintained and has been archived in 
 install.packages("https://cran.r-project.org/src/contrib/Archive/GenABEL.data/GenABEL.data_1.0.0.tar.gz", repos=NULL, type="source")
 install.packages("https://cran.r-project.org/src/contrib/Archive/GenABEL/GenABEL_1.8-0.tar.gz", repos=NULL, type="source")
 ```
-If you are working on Windows, you will have to install the binaries from this repository:
+If you want to work with GenABEL on Windows, you will have to install the binaries from this repository:
 ```{r }
 install.packages("https://raw.githubusercontent.com/visoca/popgenomworkshop-gwas_genabel/master/GenABEL.data_1.0.0.zip", repos=NULL)
 install.packages("https://raw.githubusercontent.com/visoca/popgenomworkshop-gwas_genabel/master/GenABEL_1.8-0.zip", repos=NULL)
