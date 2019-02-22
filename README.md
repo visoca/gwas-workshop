@@ -28,18 +28,22 @@ If you type `ls` and `ENTER` in the terminal then you should see two files. `gen
 
 Type `R` and enter to begin an `R` session. You can exit at any time by typing `q()` to get back to the `unix` environment.
 
-## Importing and exploring the data
+## Installing GenABEL
 GenABEL is unfortunately no longer actively maintained and has been archived in the CRAN repository. To install it you will have to run the following commands:
-```{r }
+```R
 install.packages("https://cran.r-project.org/src/contrib/Archive/GenABEL.data/GenABEL.data_1.0.0.tar.gz", repos=NULL, type="source")
 install.packages("https://cran.r-project.org/src/contrib/Archive/GenABEL/GenABEL_1.8-0.tar.gz", repos=NULL, type="source")
 ```
+If asked about setting up a local library, answer `Yes` and accept the suggested location.
+
 If you want to work with GenABEL on Windows, you will have to install the binaries from this repository:
-```{r }
+```R
 install.packages("https://raw.githubusercontent.com/visoca/popgenomworkshop-gwas_genabel/master/GenABEL.data_1.0.0.zip", repos=NULL)
 install.packages("https://raw.githubusercontent.com/visoca/popgenomworkshop-gwas_genabel/master/GenABEL_1.8-0.zip", repos=NULL)
 ```
-If asked about setting up a local library, answer `Yes` and accept the suggested location. Now load the library:
+
+## Importing and exploring the data
+First, load the library:
 ```{r }
 library(GenABEL)
 ```
