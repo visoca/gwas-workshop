@@ -4,7 +4,7 @@
 #### Originally developed by Michael Stocks
 #### Modified and delivered by Victor Soria-Carrasco
 
-The aim of this practical is to identify markers associated with male mating behaviour in the ruff. We will use the dataset of [*Küpper et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3443.html) and attempt to identify markers underlying the "female-mimic" *Faeder* morph. For this, we will use the `R` package [GenABEL](http://genabel.org/), and by the end of the tutorial you should be able to:
+The aim of this practical is to identify markers associated with male mating behaviour in the ruff. We will use the dataset of [*Küpper et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3443.html) and attempt to identify markers underlying the "female-mimic" *Faeder* morph. For this, we will use the `R` package [GenABEL](https://www.rdocumentation.org/packages/GenABEL/versions/1.8-0), and by the end of the tutorial you should be able to:
 
 * Perform a genome-wide association study
 * Add covariates to the model
@@ -29,9 +29,15 @@ If you type `ls` and `ENTER` in the terminal then you should see two files. `gen
 Type `R` and enter to begin an `R` session. You can exit at any time by typing `q()` to get back to the `unix` environment.
 
 ##Importing and exploring the data
-Install GenABEL:
+GenABEL is unfortunately no longer actively maintained and has been archived in the CRAN repository. To install it you will have to run the following commands:
 ```{r }
-install.packages("GenABEL")
+install.packages("https://cran.r-project.org/src/contrib/Archive/GenABEL.data/GenABEL.data_1.0.0.tar.gz", repos=NULL, type="source")
+install.packages("https://cran.r-project.org/src/contrib/Archive/GenABEL/GenABEL_1.8-0.tar.gz", repos=NULL, type="source")
+```
+If you are working on Windows, you will have to install the binaries from this repository:
+```{r }
+install.packages("https://raw.githubusercontent.com/visoca/popgenomworkshop-gwas_genabel/master/GenABEL.data_1.0.0.zip", repos=NULL)
+install.packages("https://raw.githubusercontent.com/visoca/popgenomworkshop-gwas_genabel/master/GenABEL_1.8-0.zip", repos=NULL)
 ```
 If asked about setting up a local library, answer `Yes` and accept the suggested location. Now load the library:
 ```{r }
@@ -46,7 +52,7 @@ We'll now do some basic filtering to remove uninformative markers and to decreas
 qc <- check.marker(ruff.data, callrate = 0.66, p.level = 1e-5, perid.call = 0, extr.perid.call = 0, ibs.mrk = -1)
 ruff.clean <- ruff.data[qc$idok, qc$snpok]
 ```
-We will not go into the details of these filters but more information is available [here](http://genabel.org/GenABEL/check.marker.html).
+We will not go into the details of these filters but more information is available [here](https://www.rdocumentation.org/packages/GenABEL/versions/1.8-0/topics/check.marker).
 
 A brief overview of the data are given for the traits or the markers using the following two commands:
 ```{r }
@@ -75,7 +81,7 @@ You can also increase the number of markers displayed in the summary:
 ```{r }
 summary(fo.QT, top = 30)
 ```
-This gives information about the location (`Chromosome`, `Position`) of each marker and the significance of the association (`P1df`). We will deal with the `Pc1df` column in the population stratification section (more details on the columns are given at [http://www.genabel.org/GenABEL/scan.gwaa-class.html](http://www.genabel.org/GenABEL/scan.gwaa-class.html)). You can also check how many markers are below a certain significance threshold:
+This gives information about the location (`Chromosome`, `Position`) of each marker and the significance of the association (`P1df`). We will deal with the `Pc1df` column in the population stratification section (more details on the columns are given [here](https://www.rdocumentation.org/packages/GenABEL/versions/1.8-0/topics/scan.gwaa-class.html)). You can also check how many markers are below a certain significance threshold:
 ```{r }
 sum(fo.QT[, "P1df"] <= 0.0001)
 ```
