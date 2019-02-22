@@ -1,6 +1,7 @@
-*Population Genomics Workshop 2017, University of Sheffield*
+*Population Genomics Workshop 2019, University of Sheffield*
 #Genome-wide association studies in structured populations
-####Michael Stocks
+####Originally developed by Michael Stocks
+####Delivered by Victor Soria-Carrasco
 
 The aim of this practical is to identify markers associated with male mating behaviour in the ruff. We will use the dataset of [*Küpper et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3443.html) and attempt to identify markers underlying the "female-mimic" *Faeder* morph. For this, we will use the `R` package [GenABEL](http://genabel.org/), and by the end of the tutorial you should be able to:
 
@@ -13,7 +14,7 @@ The aim of this practical is to identify markers associated with male mating beh
 
 Inside your home directly type the following to download the tutorial and data:
 ```bash
-git clone https://github.com/mspopgen/gwas-workshop
+git clone https://github.com/visoca/popgenomworkshop-gwas_genabel
 ```
 
 This will create a file called `gwas-workshop`. Move into the directory and decompress the data:
@@ -54,7 +55,7 @@ descriptives.marker(ruff.clean)
 The data consists of 41 male ruff individuals. The phenotypic data is contained in a data frame given by the `phdata` method. Using the command `table(ruff.clean@phdata[, "morph"])`, you can see that of the three different morphs: 21 are *Independent*, 10 are *Satellite* and 10 are *Faeder*. Each of these morphs has a number of distinct physiological and behavioural phenotypes (see table below) that have been shown through breeding experiments to be Mendelian inherited traits (Lank *et al.* [1995](http://www.nature.com/nature/journal/v378/n6552/abs/378059a0.html), [2013](http://rsbl.royalsocietypublishing.org/content/9/6/20130653)). 
 
 <p align="center">
-<img src="https://github.com/mspopgen/genomics-workshop2016/blob/master/ruff-sys.png" width="640" align="center">
+<img src="ruff-sys.png" width="640" align="center">
 </p>
 
 The genotypic data consists of markers derived from RAD sequencing, and have been mapped to the ruff draft genome. See [*Küpper et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3443.html), and it's sister publication [*Lamichhaney et al. (2016)*](http://www.nature.com/ng/journal/v48/n1/full/ng.3430.html), for more details. After filtering we now have a dataset of 383,514 snps with which to look for associations with the trait of interest. 
